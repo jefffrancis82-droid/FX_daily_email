@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import smtplib
+import html as html_lib
 from datetime import date, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -55,6 +56,105 @@ def build_email_body(anchor: date, rates: dict) -> str:
         ch_1d = pct_change(y[ccy], d7[ccy]) if False else pct_change(y[ccy], rates["D-2"][ccy])  # replaced below
 
     return "\n".join(lines)
+
+def fmt_rate(x: float) -> str:
+    return f"{x:,.2f}"
+
+def fmt_pct_html(x: float) -> str:
+    sign = "+" if x >= 0 else ""
+    return f"{sign}{x:.2f}%"
+
+def pct_class(x: float) -> str:
+    return "pos" if x >= 0 else "neg"
+
+
+def build_fx_html_table(spot_date: date, rates: dict) -> str:
+    # rates keys: "D-1", "D-2", "D-7", "D-30", "D-365"
+    rows = []
+    for ccy in CURRENCIES:
+        spot = rates["D-1"][ccy]
+        r2 = rates["D-2"][ccy]
+        r7 = rates["D-7"][ccy]
+        r30 = rates["D-30"][ccy]
+        r365 = rates["D-365"][ccy]
+
+        ch_1d = pct_change(spot, r2)
+        ch_7d = pct_change(spot, r7)
+        ch_1m = pct_change(spot, r30)
+        ch_1y = pct_change(spot, r365)
+
+        rows.append(f"""
+<tr>
+  <td class="ccy">{html_lib.escape(ccy)}</td>
+  <td class="num">{fmt_rate(spot)}</td>
+
+  <td class="num">{fmt_rate(r2)}</td>
+  <td class="num {pct_class(ch_1d)}">{fmt_pct_html(ch_1d)}</td>
+
+  <td class="num">{fmt_rate(r7)}</td>
+  <td class="num {pct_class(ch_7d)}">{fmt_pct_html(ch_7d)}</td>
+
+  <td class="num">{fmt_rate(r30)}</td>
+  <td class="num {pct_class(ch_1m)}">{fmt_pct_html(ch_1m)}</td>
+
+  <td class="num">{fmt_rate(r365)}</td>
+  <td class="num {pct_class(ch_1y)}">{fmt_pct_html(ch_1y)}</td>
+</tr>
+""".strip())
+
+    return f"""\
+<html>
+  <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#111;margin:0;padding:0;">
+    <div style="padding:16px 16px 6px 16px;">
+      <div style="font-size:16px;font-weight:700;margin:0 0 6px 0;">Daily FX (base {BASE})</div>
+      <div style="font-size:13px;color:#333;margin:0 0 2px 0;">
+        Spot date: <b>{spot_date.isoformat()}</b> (previous day)
+      </div>
+      <div style="font-size:12px;color:#555;margin:0 0 12px 0;">
+        Quoted as: 1 {BASE} = X CCY
+      </div>
+
+      <table style="border-collapse:collapse;font-size:13px;min-width:720px;">
+        <thead>
+          <tr>
+            <th class="h left">CCY</th>
+            <th class="h">Spot</th>
+
+            <th class="h">D-2</th>
+            <th class="h">1D</th>
+
+            <th class="h">D-7</th>
+            <th class="h">7D</th>
+
+            <th class="h">D-30</th>
+            <th class="h">1M</th>
+
+            <th class="h">D-365</th>
+            <th class="h">1Y</th>
+          </tr>
+        </thead>
+        <tbody>
+          {''.join(rows)}
+        </tbody>
+      </table>
+
+      <div style="font-size:11px;color:#777;margin-top:10px;">
+        Rates shown to 2 decimal places. Trends are percentage change vs the comparison date.
+      </div>
+    </div>
+
+    <style>
+      .h {{ text-align:right; padding:8px 10px; border-bottom:1px solid #ddd; color:#222; font-weight:700; }}
+      .left {{ text-align:left; }}
+      .ccy {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; font-weight:700; text-align:left; }}
+      .num {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; text-align:right; white-space:nowrap; }}
+      .pos {{ color:#137333; font-weight:700; }}
+      .neg {{ color:#a50e0e; font-weight:700; }}
+    </style>
+  </body>
+</html>
+""".strip()
+
 
 
 def main():
@@ -120,11 +220,11 @@ def main():
         # Row 1: rates
         lines.append(
             f"{ccy:<5} "
-            f"{spot:>12,.4f} "
-            f"{r2:>12,.4f} "
-            f"{r7:>12,.4f} "
-            f"{r30:>12,.4f} "
-            f"{r365:>12,.4f}"
+            f"{spot:>12,.2f} "
+            f"{r2:>12,.2f} "
+            f"{r7:>12,.2f} "
+            f"{r30:>12,.2f} "
+            f"{r365:>12,.2f}"
         )
 
         # Row 2: trends
@@ -141,19 +241,7 @@ def main():
 
     body_text = "\n".join(lines)
     
-    body_html = f"""\
-    <html>
-      <body>
-        <pre style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-                    font-size: 13px;
-                    line-height: 1.35;
-                    white-space: pre;">
-    {body_text}
-        </pre>
-      </body>
-    </html>
-    """.strip()
-
+    body_html = build_fx_html_table(d_1, rates)
 
     # Compose email
     subject = f"Daily FX: USD vs KES/UGX/NGN/TZS (spot {d_1.isoformat()})"
