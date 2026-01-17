@@ -93,20 +93,51 @@ def main():
     lines.append("")
     lines.append("Quoted as: 1 USD = X CCY")
     lines.append("")
-    header = f"{'CCY':<5} {'Spot':>14} {'1D':>10} {'7D':>10} {'1M':>10} {'1Y':>10}"
+
+    header = (
+        f"{'CCY':<5} "
+        f"{'Spot':>12} "
+        f"{'D-2':>12} "
+        f"{'D-7':>12} "
+        f"{'D-30':>12} "
+        f"{'D-365':>12}"
+    )
     lines.append(header)
     lines.append("-" * len(header))
 
     for ccy in CURRENCIES:
         spot = rates["D-1"][ccy]
-        ch_1d = pct_change(rates["D-1"][ccy], rates["D-2"][ccy])
-        ch_7d = pct_change(rates["D-1"][ccy], rates["D-7"][ccy])
-        ch_1m = pct_change(rates["D-1"][ccy], rates["D-30"][ccy])
-        ch_1y = pct_change(rates["D-1"][ccy], rates["D-365"][ccy])
+        r2 = rates["D-2"][ccy]
+        r7 = rates["D-7"][ccy]
+        r30 = rates["D-30"][ccy]
+        r365 = rates["D-365"][ccy]
 
+        ch_1d = pct_change(spot, r2)
+        ch_7d = pct_change(spot, r7)
+        ch_1m = pct_change(spot, r30)
+        ch_1y = pct_change(spot, r365)
+
+        # Row 1: rates
         lines.append(
-            f"{ccy:<5} {spot:>14,.4f} {fmt_pct(ch_1d):>10} {fmt_pct(ch_7d):>10} {fmt_pct(ch_1m):>10} {fmt_pct(ch_1y):>10}"
+            f"{ccy:<5} "
+            f"{spot:>12,.4f} "
+            f"{r2:>12,.4f} "
+            f"{r7:>12,.4f} "
+            f"{r30:>12,.4f} "
+            f"{r365:>12,.4f}"
         )
+
+        # Row 2: trends
+        lines.append(
+            f"{'':<5} "
+            f"{'':>12} "
+            f"{fmt_pct(ch_1d):>12} "
+            f"{fmt_pct(ch_7d):>12} "
+            f"{fmt_pct(ch_1m):>12} "
+            f"{fmt_pct(ch_1y):>12}"
+        )
+
+        lines.append("")  # blank line between currencies
 
     body = "\n".join(lines)
 
