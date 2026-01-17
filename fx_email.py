@@ -85,25 +85,27 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
 
         # Row 1: rates
         rows.append(f"""
+rows.append(f"""
 <tr>
   <td class="ccy">{html_lib.escape(ccy)}</td>
-  <td class="num">{fmt_rate(spot)}</td>
-  <td class="num">{fmt_rate(r2)}</td>
-  <td class="num">{fmt_rate(r7)}</td>
-  <td class="num">{fmt_rate(r30)}</td>
-  <td class="num">{fmt_rate(r365)}</td>
+  <td class="num" style="text-align:right; white-space:nowrap;">{fmt_rate(spot)}</td>
+  <td class="num" style="text-align:right; white-space:nowrap;">{fmt_rate(r2)}</td>
+  <td class="num" style="text-align:right; white-space:nowrap;">{fmt_rate(r7)}</td>
+  <td class="num" style="text-align:right; white-space:nowrap;">{fmt_rate(r30)}</td>
+  <td class="num" style="text-align:right; white-space:nowrap;">{fmt_rate(r365)}</td>
 </tr>
 """.strip())
 
         # Row 2: trends
         rows.append(f"""
+rows.append(f"""
 <tr class="trend-row">
   <td></td>
-  <td class="trend-label num">% change</td>
-  <td class="num {pct_class(ch_1d)}">{fmt_pct_html(ch_1d)}</td>
-  <td class="num {pct_class(ch_7d)}">{fmt_pct_html(ch_7d)}</td>
-  <td class="num {pct_class(ch_1m)}">{fmt_pct_html(ch_1m)}</td>
-  <td class="num {pct_class(ch_1y)}">{fmt_pct_html(ch_1y)}</td>
+  <td class="trend-label" style="text-align:right; white-space:nowrap;">% change</td>
+  <td class="num {pct_class(ch_1d)}" style="text-align:right; white-space:nowrap;">{fmt_pct_html(ch_1d)}</td>
+  <td class="num {pct_class(ch_7d)}" style="text-align:right; white-space:nowrap;">{fmt_pct_html(ch_7d)}</td>
+  <td class="num {pct_class(ch_1m)}" style="text-align:right; white-space:nowrap;">{fmt_pct_html(ch_1m)}</td>
+  <td class="num {pct_class(ch_1y)}" style="text-align:right; white-space:nowrap;">{fmt_pct_html(ch_1y)}</td>
 </tr>
 """.strip())
 
