@@ -139,9 +139,9 @@ def main():
 
         lines.append("")  # blank line between currencies
 
-    body = "\n".join(lines)
+    body_text = "\n".join(lines)
     
-    body_html = f"""
+    body_html = f"""\
     <html>
       <body>
         <pre style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
@@ -156,6 +156,8 @@ def main():
 
 
     # Compose email
+    subject = f"Daily FX: USD vs KES/UGX/NGN/TZS (spot {d_1.isoformat()})"
+
     msg = MIMEMultipart("alternative")
     msg["From"] = email_from
     msg["To"] = email_to
