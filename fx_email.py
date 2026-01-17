@@ -99,7 +99,7 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
         rows.append(f"""
 <tr class="trend-row">
   <td></td>
-  <td class="trend-label">% change</td>
+  <td class="trend-label num">% change</td>
   <td class="num {pct_class(ch_1d)}">{fmt_pct_html(ch_1d)}</td>
   <td class="num {pct_class(ch_7d)}">{fmt_pct_html(ch_7d)}</td>
   <td class="num {pct_class(ch_1m)}">{fmt_pct_html(ch_1m)}</td>
@@ -142,13 +142,26 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
     <style>
       .h {{ text-align:right; padding:8px 10px; border-bottom:1px solid #ddd; font-weight:700; }}
       .left {{ text-align:left; }}
-      .ccy {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; font-weight:700; }}
-      .num {{ padding:6px 10px; border-bottom:1px solid #f0f0f0; text-align:right; white-space:nowrap; }}
+      .ccy {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; font-weight:700; text-align:left; }}
+      .num {{
+        padding:6px 10px;
+        border-bottom:1px solid #f0f0f0;
+        text-align:right !important;
+        white-space:nowrap;
+      }}
       .trend-row td {{ padding-top:0; padding-bottom:10px; }}
-      .trend-label {{ padding:0 10px 10px 10px; color:#666; font-size:12px; text-align:right; border-bottom:1px solid #f0f0f0; white-space:nowrap; }}
+      .trend-label {{
+        padding:0 10px 10px 10px;
+        color:#666;
+        font-size:12px;
+        text-align:right !important;
+        border-bottom:1px solid #f0f0f0;
+        white-space:nowrap;
+      }}
       .pos {{ color:#137333; font-weight:700; }}
       .neg {{ color:#a50e0e; font-weight:700; }}
     </style>
+
   </body>
 </html>
 """.strip()
