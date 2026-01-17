@@ -140,36 +140,49 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
     </div>
 
     <style>
-      .h {
-      text-align: right;
-      padding: 8px 10px;
-      border-bottom: 1px solid #ddd;
-      font-weight: 700;
-    }
+      .h {{
+        text-align: right;
+        padding: 8px 10px;
+        border-bottom: 1px solid #ddd;
+        font-weight: 700;
+      }}
 
-    th.left {
-      text-align: left;
-    }
+      th.left {{
+        text-align: left;
+      }}
 
-      .ccy {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; font-weight:700; text-align:left; }}
+      .ccy {{
+        padding: 8px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        font-weight: 700;
+        text-align: left;
+      }}
+
       .num {{
-        padding:6px 10px;
-        border-bottom:1px solid #f0f0f0;
-        text-align:right !important;
-        white-space:nowrap;
+        padding: 6px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: right;
+        white-space: nowrap;
       }}
-      .trend-row td {{ padding-top:0; padding-bottom:10px; }}
+
+      .trend-row td {{
+        padding-top: 0;
+        padding-bottom: 10px;
+      }}
+
       .trend-label {{
-        padding:0 10px 10px 10px;
-        color:#666;
-        font-size:12px;
-        text-align:right !important;
-        border-bottom:1px solid #f0f0f0;
-        white-space:nowrap;
+        padding: 0 10px 10px 10px;
+        color: #666;
+        font-size: 12px;
+        text-align: right;
+        border-bottom: 1px solid #f0f0f0;
+        white-space: nowrap;
       }}
-      .pos {{ color:#137333; font-weight:700; }}
-      .neg {{ color:#a50e0e; font-weight:700; }}
+
+      .pos {{ color: #137333; font-weight: 700; }}
+      .neg {{ color: #a50e0e; font-weight: 700; }}
     </style>
+
 
   </body>
 </html>
