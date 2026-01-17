@@ -140,6 +140,20 @@ def main():
         lines.append("")  # blank line between currencies
 
     body = "\n".join(lines)
+    
+    body_html = f"""
+    <html>
+      <body>
+        <pre style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+                    font-size: 13px;
+                    line-height: 1.35;
+                    white-space: pre;">
+    {body_text}
+        </pre>
+      </body>
+    </html>
+    """.strip()
+
 
     # Compose email
     subject = f"Daily FX: USD vs KES/UGX/NGN/TZS (spot {d_1.isoformat()})"
