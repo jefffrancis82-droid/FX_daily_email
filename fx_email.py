@@ -140,8 +140,17 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
     </div>
 
     <style>
-      .h {{ text-align:right; padding:8px 10px; border-bottom:1px solid #ddd; font-weight:700; }}
-      .left {{ text-align:left; }}
+      .h {
+      text-align: right;
+      padding: 8px 10px;
+      border-bottom: 1px solid #ddd;
+      font-weight: 700;
+    }
+
+    th.left {
+      text-align: left;
+    }
+
       .ccy {{ padding:8px 10px; border-bottom:1px solid #f0f0f0; font-weight:700; text-align:left; }}
       .num {{
         padding:6px 10px;
