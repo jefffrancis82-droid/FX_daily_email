@@ -3,7 +3,7 @@ name: Daily FX Email
 on:
   schedule:
     # Runs daily at 06:10 UTC (adjust as desired)
-    - cron: "10 6 * * *"
+    - cron: "0 5 * * *"
   workflow_dispatch: {}
 
 jobs:
