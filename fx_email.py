@@ -156,12 +156,13 @@ def main():
 
 
     # Compose email
-    subject = f"Daily FX: USD vs KES/UGX/NGN/TZS (spot {d_1.isoformat()})"
-    msg = MIMEMultipart()
+    msg = MIMEMultipart("alternative")
     msg["From"] = email_from
     msg["To"] = email_to
     msg["Subject"] = subject
-    msg.attach(MIMEText(body, "plain"))
+
+    msg.attach(MIMEText(body_text, "plain"))   # fallback
+    msg.attach(MIMEText(body_html, "html"))    # aligned version
 
     # Send
     with smtplib.SMTP(smtp_host, smtp_port) as server:
