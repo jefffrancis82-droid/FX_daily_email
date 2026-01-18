@@ -129,11 +129,11 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
         <thead>
           <tr>
             <th class="h left">CCY</th>
-            <th class="h"></th>   <!-- spacer for % change label -->
             <th class="h">Spot</th>
             <th class="h">Yesterday</th>
             <th class="h">Last week</th>
             <th class="h">Last month</th>
+            <th class="h">Last year</th>
           </tr>
         </thead>
         <tbody>
