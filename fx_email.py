@@ -128,11 +128,12 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
       <table style="border-collapse:collapse;font-size:13px;min-width:680px;">
         <thead>
           <tr>
-            <th class="h">{HEADINGS["spot"]}</th>
-            <th class="h">{HEADINGS["d2"]}</th>
-            <th class="h">{HEADINGS["d7"]}</th>
-            <th class="h">{HEADINGS["d30"]}</th>
-            <th class="h">{HEADINGS["d365"]}</th>
+            <th class="h left">CCY</th>
+            <th class="h"></th>   <!-- spacer for % change label -->
+            <th class="h">Spot</th>
+            <th class="h">Yesterday</th>
+            <th class="h">Last week</th>
+            <th class="h">Last month</th>
           </tr>
         </thead>
         <tbody>
