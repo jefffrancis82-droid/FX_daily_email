@@ -12,6 +12,13 @@ import requests
 CURRENCIES = ["KES", "UGX", "NGN", "TZS"]
 BASE = "USD"
 
+HEADINGS = {
+    "spot": "Spot",
+    "d2": "Yesterday",
+    "d7": "Last week",
+    "d30": "Last month",
+    "d365": "Last year",
+}
 
 def get_rates_for_day(app_id: str, day: date) -> dict:
     # Open Exchange Rates historical endpoint: /historical/YYYY-MM-DD.json
@@ -121,12 +128,11 @@ def build_fx_html_table(spot_date: date, rates: dict) -> str:
       <table style="border-collapse:collapse;font-size:13px;min-width:680px;">
         <thead>
           <tr>
-            <th class="h left">CCY</th>
-            <th class="h">Spot</th>
-            <th class="h">D-2</th>
-            <th class="h">D-7</th>
-            <th class="h">D-30</th>
-            <th class="h">D-365</th>
+            <th class="h">{HEADINGS["spot"]}</th>
+            <th class="h">{HEADINGS["d2"]}</th>
+            <th class="h">{HEADINGS["d7"]}</th>
+            <th class="h">{HEADINGS["d30"]}</th>
+            <th class="h">{HEADINGS["d365"]}</th>
           </tr>
         </thead>
         <tbody>
@@ -230,11 +236,11 @@ def main():
 
     header = (
         f"{'CCY':<5} "
-        f"{'Spot':>12} "
-        f"{'D-2':>12} "
-        f"{'D-7':>12} "
-        f"{'D-30':>12} "
-        f"{'D-365':>12}"
+        f"{HEADINGS['spot']:>12} "
+        f"{HEADINGS['d2']:>12} "
+        f"{HEADINGS['d7']:>12} "
+        f"{HEADINGS['d30']:>12} "
+        f"{HEADINGS['d365']:>12}"
     )
     lines.append(header)
     lines.append("-" * len(header))
