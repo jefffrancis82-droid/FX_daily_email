@@ -285,10 +285,10 @@ def main():
     body_html = build_fx_html_table(d_1, rates)
 
     # Compose email
-    subject = f"Daily FX: USD vs KES/UGX/NGN/TZS (spot {d_1.isoformat()})"
+    subject = f"Daily FX rates (spot {d_1.isoformat()})"
 
     msg = MIMEMultipart("alternative")
-    msg["From"] = email_from
+    msg["From"] = f"FX Rates <{email_from}>"
     msg["To"] = email_to
     msg["Subject"] = subject
 
